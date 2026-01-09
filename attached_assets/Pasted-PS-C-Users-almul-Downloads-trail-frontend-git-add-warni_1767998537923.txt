@@ -1,0 +1,111 @@
+PS C:\Users\almul\Downloads\trail-frontend> git add .
+warning: in the working copy of 'package-lock.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/components/AllModals/AddEventModal.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/components/AllModals/AddMemberModal.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/components/AllModals/AddMilestone.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/components/AllModals/AddPartnersModal.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/components/AllModals/AddRoleModal.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/components/AllModals/CreateEntityModal.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/components/AllModals/CreateKPIModal.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/components/AllModals/CreateMetricModal.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/components/AllModals/CreateStructureModal.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/components/AllModals/CustomGoalModal.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/components/Buttons/Button.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/components/Entity/Entity.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/components/FormModule/FormTable.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/components/Forms/ChangePwdForm.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/components/Forms/ForgotPasswordForm.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/components/Forms/LoginForm.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/components/Forms/SignUpForm/StepOne.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/components/Forms/SignUpForm/StepThree.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/components/Goals/Goals.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/components/KPI/Kpi.tsx', LF will be replaced by CRLF the next time Git touches it  
+warning: in the working copy of 'src/components/Metric/Metric.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/components/Profile/EditProfile.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/components/Profile/ProfileDetail.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/components/Programme/NewProgramme/IndicatorSelection.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/components/Programme/NewProgramme/ProgrammeData.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/components/Programme/NewProgramme/ProgrammeSucess.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/components/Programme/NewProgramme/SdgGrogramme.tsx', LF will be replaced by CRLF the next time Git touches it      
+warning: in the working copy of 'src/components/header/index.tsx', LF will be replaced by CRLF the next time Git touches it
+PS C:\Users\almul\Downloads\trail-frontend> git commit -m "po"
+[main ee2900d] po
+ 49 files changed, 5646 insertions(+), 2082 deletions(-)
+ create mode 100644 src/app/app/carbon-netzero/page.tsx
+ create mode 100644 src/app/app/green-taxonomy/page.tsx
+ create mode 100644 src/app/app/pfi-import/page.tsx
+ create mode 100644 src/app/app/projects-drilldown/page.tsx
+ create mode 100644 src/app/app/reports/page.tsx
+ create mode 100644 src/components/ESG/CarbonNetZero.tsx
+ create mode 100644 src/components/ESG/GreenTaxonomy.tsx
+ create mode 100644 src/components/ESG/PFISubmissions.tsx
+ create mode 100644 src/components/ESG/PortfolioDrilldown.tsx
+ create mode 100644 src/components/ESG/PortfolioOverview.tsx
+ create mode 100644 src/components/ESG/ReportsExport.tsx
+PS C:\Users\almul\Downloads\trail-frontend> git push origin main
+Enumerating objects: 140, done.
+Counting objects: 100% (140/140), done.
+Delta compression using up to 12 threads
+Compressing objects: 100% (67/67), done.
+Writing objects: 100% (79/79), 60.86 KiB | 1.19 MiB/s, done.
+Total 79 (delta 41), reused 0 (delta 0), pack-reused 0 (from 0)
+remote: Resolving deltas: 100% (41/41), completed with 41 local objects.    
+To https://github.com/fyung36/trail-frontend.git
+   fd87bed..ee2900d  main -> main
+PS C:\Users\almul\Downloads\trail-frontend> git add .
+PS C:\Users\almul\Downloads\trail-frontend> git commit -m "po"
+[main de68fdc] po
+ 1 file changed, 44 insertions(+), 33 deletions(-)
+PS C:\Users\almul\Downloads\trail-frontend> git pull origin main
+From https://github.com/fyung36/trail-frontend
+ * branch            main       -> FETCH_HEAD
+Auto-merging package-lock.json
+Merge made by the 'ort' strategy.
+ .replit                                            |  39 ++
+ ...ing-the-Trail-demo-For-DBN-we_1767997560689.txt | 165 +++++++
+ ...ation-Software-Product-Requir_1767997619006.txt | 522 +++++++++++++++++++++
+ next.config.js                                     |  16 +-
+ package.json                                       |   4 +-
+ replit.md                                          |  45 ++
+ src/Theme/ThemeProvider.tsx                        |  32 +-
+ src/components/Overview/OverviewStat.tsx           | 163 ++-----
+ src/styles/index.scss                              | 186 +++++---
+ 9 files changed, 969 insertions(+), 203 deletions(-)
+ create mode 100644 .replit
+ create mode 100644 attached_assets/Pasted-Hello-Team-Thanks-for-sharing-the-Trail-demo-For-DBN-we_1767997560689.txt
+ create mode 100644 attached_assets/Pasted-TRAIL-Monitoring-and-Evaluation-Software-Product-Requir_1767997619006.txt
+ create mode 100644 replit.md
+PS C:\Users\almul\Downloads\trail-frontend> npm run build
+
+> trail-v-three@0.1.0 build
+> next build
+
+   ▲ Next.js 14.0.4
+
+ ⚠ Found lockfile missing swc dependencies, patching...
+ ⚠ Lockfile was successfully patched, please run "npm install" to ensure @next/swc dependencies are downloaded
+ ✓ Creating an optimized production build    
+ ✓ Compiled successfully
+ ✓ Linting and checking validity of types    
+   Collecting page data  ..Error [ERR_MODULE_NOT_FOUND]: Cannot find module 'C:\Users\almul\Downloads\trail-frontend\node_modules\rc-util\es\hooks\useEvent' imported from C:\Users\almul\Downloads\trail-frontend\node_modules\rc-util\es\hooks\useMergedState.js
+    at finalizeResolution (node:internal/modules/esm/resolve:275:11)        
+    at moduleResolve (node:internal/modules/esm/resolve:932:10)
+    at defaultResolve (node:internal/modules/esm/resolve:1056:11)
+    at ModuleLoader.defaultResolve (node:internal/modules/esm/loader:654:12)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:603:25)      
+    at ModuleLoader.getModuleJobForRequire (node:internal/modules/esm/loader:353:53)
+    at new ModuleJobSync (node:internal/modules/esm/module_job:341:34)      
+    at ModuleLoader.importSyncForRequire (node:internal/modules/esm/loader:326:11)
+    at loadESMFromCJS (node:internal/modules/cjs/loader:1411:24)
+    at Module._compile (node:internal/modules/cjs/loader:1544:5) {
+  code: 'ERR_MODULE_NOT_FOUND',
+  url: 'file:///C:/Users/almul/Downloads/trail-frontend/node_modules/rc-util/es/hooks/useEvent'
+}
+
+> Build error occurred
+Error: Failed to collect page data for /Form/FormLogic
+    at C:\Users\almul\Downloads\trail-frontend\node_modules\next\dist\build\utils.js:1220:15
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5) {
+  type: 'Error'
+}
+PS C:\Users\almul\Downloads\trail-frontend> 
