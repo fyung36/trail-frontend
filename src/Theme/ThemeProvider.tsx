@@ -6,10 +6,12 @@ export const ThemeContext = createContext<any>({});
 
 export const ThemeProvider = ({ children }: any) => {
   const [theme, setTheme] = useState("light");
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme") || "light";
     setTheme(savedTheme);
+    setIsMounted(true);
   }, []);
 
   const switchDark = () => {
@@ -30,6 +32,10 @@ export const ThemeProvider = ({ children }: any) => {
       borderRadius: 8,
     },
   }), [theme]);
+
+  if (!isMounted) {
+    return <div style={{ visibility: 'hidden' }}>{children}</div>;
+  }
 
   return (
     <ThemeContext.Provider value={{ theme, switchDark, switchLight }}>
