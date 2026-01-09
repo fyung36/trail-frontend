@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 @import "_config";
 @import "_preloader";
 @import "_sidebar";
@@ -9,10 +10,63 @@
 @import "_settings";
 @import "_btn";
 @import "_programme.scss";
-//Button
+
+:root {
+  --font-inter: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
 * {
   margin-inline: 0;
-  // padding:0
+  font-family: var(--font-inter);
+}
+
+.light {
+  background-color: #f9fafb;
+  color: #111827;
+  
+  .dashboard-tab, .card, .ant-card, .new-sidebar-nav {
+    background-color: #ffffff !important;
+    border-color: #f3f4f6 !important;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06) !important;
+  }
+}
+
+.dark {
+  background-color: #0f172a;
+  color: #f8fafc;
+  
+  .dashboard-tab, .card, .ant-card, .new-sidebar-nav {
+    background-color: #1e293b !important;
+    border-color: #334155 !important;
+    color: #f8fafc !important;
+  }
+  
+  .stat-title, p, span:not(.ant-tag) {
+    color: #94a3b8 !important;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    color: #f1f5f9 !important;
+  }
+  
+  .ant-table {
+    background: transparent !important;
+    color: #f8fafc !important;
+  }
+  
+  .ant-table-thead > tr > th {
+    background: #1e293b !important;
+    color: #94a3b8 !important;
+    border-bottom: 1px solid #334155 !important;
+  }
+  
+  .ant-table-tbody > tr > td {
+    border-bottom: 1px solid #334155 !important;
+  }
+  
+  .ant-table-row:hover > td {
+    background: #334155 !important;
+  }
 }
 %btn {
   background-color: $member-button-color;
@@ -2196,8 +2250,8 @@
         border-radius: 8px !important;
 
         // .row {
-        // 	display: flex;
-        // 	margin-bottom: 10px;
+        //      display: flex;
+        //      margin-bottom: 10px;
         // }
 
         .small__box__container {
@@ -2304,76 +2358,76 @@
 
 // /* Phone */
 // @media (max-width: 480px) {
-// 	.landingPage {
-// 		padding: 10px;
+//      .landingPage {
+//              padding: 10px;
 
-// 		h3 {
-// 			font-size: 18px;
-// 			line-height: 22px;
-// 		}
+//              h3 {
+//                      font-size: 18px;
+//                      line-height: 22px;
+//              }
 
-// 		h5 {
-// 			font-size: 14px;
-// 			line-height: 20px;
-// 		}
+//              h5 {
+//                      font-size: 14px;
+//                      line-height: 20px;
+//              }
 
-// 		.radio__group {
-// 			flex-direction: column;
-// 			align-items: center;
-// 		}
+//              .radio__group {
+//                      flex-direction: column;
+//                      align-items: center;
+//              }
 
-// 		.radio__group__button {
-// 			max-width: 100%;
-// 			margin: 0 auto 10px;
-// 		}
+//              .radio__group__button {
+//                      max-width: 100%;
+//                      margin: 0 auto 10px;
+//              }
 
-// 		.small__box__container {
-// 			.img {
-// 				width: 40px;
-// 				height: 40px;
-// 			}
+//              .small__box__container {
+//                      .img {
+//                              width: 40px;
+//                              height: 40px;
+//                      }
 
-// 			p {
-// 				font-size: 12px;
-// 				line-height: 16px;
-// 			}
-// 		}
-// 	}
+//                      p {
+//                              font-size: 12px;
+//                              line-height: 16px;
+//                      }
+//              }
+//      }
 // }
 
 // /* Tablet */
 // @media (min-width: 481px) and (max-width: 1023px) {
-// 	.landingPage {
-// 		padding: 30px;
+//      .landingPage {
+//              padding: 30px;
 
-// 		h3 {
-// 			font-size: 28px;
-// 			line-height: 32px;
-// 		}
+//              h3 {
+//                      font-size: 28px;
+//                      line-height: 32px;
+//              }
 
-// 		h5 {
-// 			font-size: 16px;
-// 			line-height: 24px;
-// 		}
-// 	}
+//              h5 {
+//                      font-size: 16px;
+//                      line-height: 24px;
+//              }
+//      }
 // }
 
 // /* Desktop */
 // @media (min-width: 1024px) {
-// 	.landingPage {
-// 		width: 800px;
-// 		padding: 60px;
+//      .landingPage {
+//              width: 800px;
+//              padding: 60px;
 
-// 		.radio__group {
-// 			flex-direction: row;
-// 			align-items: flex-start;
+//              .radio__group {
+//                      flex-direction: row;
+//                      align-items: flex-start;
 
-// 			.radio__group__button {
-// 				max-width: 250px;
-// 				margin-right: 20px;
-// 			}
-// 		}
-// 	}
+//                      .radio__group__button {
+//                              max-width: 250px;
+//                              margin-right: 20px;
+//                      }
+//              }
+//      }
 // }
 .ant-tabs-tab {
   border-radius: 20px;
