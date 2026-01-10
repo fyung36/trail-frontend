@@ -41,6 +41,15 @@ interface ErrorLog {
   action: string;
 }
 
+interface UploadedFile {
+  id: string;
+  name: string;
+  type: "excel" | "form";
+  file: File;
+  uploadDate: string;
+  size: number;
+}
+
 // Mock PFI Submissions Data - Comprehensive and Consistent
 const mockPFISubmissions: PFISubmission[] = [
   {
@@ -355,6 +364,8 @@ export const PFISubmissions: React.FC = () => {
   const [selectedRow, setSelectedRow] = useState<PFISubmission | null>(null);
   const [errorLogVisible, setErrorLogVisible] = useState(false);
   const [activeTab, setActiveTab] = useState("submissions");
+  const [uploadType, setUploadType] = useState<"excel" | "form">("excel");
+  const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -416,7 +427,7 @@ export const PFISubmissions: React.FC = () => {
       dataIndex: "submissionDate",
       key: "submissionDate",
       width: 150,
-      sorter: (a, b) => new Date(a.submissionDate).getTime() - new Date(b.submissionDate).getTime(),
+      sorter: (a: PFISubmission, b: PFISubmission) => new Date(a.submissionDate).getTime() - new Date(b.submissionDate).getTime(),
     },
     {
       title: "Status",
@@ -451,7 +462,7 @@ export const PFISubmissions: React.FC = () => {
           />
         </Space>
       ),
-      sorter: (a, b) => a.dataQualityScore - b.dataQualityScore,
+      sorter: (a: PFISubmission, b: PFISubmission) => a.dataQualityScore - b.dataQualityScore,
     },
     {
       title: "Error Count",
@@ -467,7 +478,7 @@ export const PFISubmissions: React.FC = () => {
           {count} {count === 1 ? "error" : "errors"}
         </Button>
       ),
-      sorter: (a, b) => a.errorCount - b.errorCount,
+      sorter: (a: PFISubmission, b: PFISubmission) => a.errorCount - b.errorCount,
     },
     {
       title: "Validator",
@@ -486,7 +497,7 @@ export const PFISubmissions: React.FC = () => {
       key: "actions",
       width: 200,
       fixed: "right",
-      render: (_, record: PFISubmission) => (
+      render: (_: unknown, record: PFISubmission) => (
         <Space>
           {record.status === "Draft" && (
             <Button size="small" type="primary">
@@ -579,7 +590,7 @@ export const PFISubmissions: React.FC = () => {
       size: file.size,
     };
 
-    setUploadedFiles((prev) => [...prev, uploadedFile]);
+    setUploadedFiles((prev: UploadedFile[]) => [...prev, uploadedFile]);
     
     if (type === "excel") {
       message.success(`Excel file "${file.name}" uploaded successfully. Validation in progress...`);
@@ -596,7 +607,7 @@ export const PFISubmissions: React.FC = () => {
   };
 
   const handleRemoveFile = (fileId: string) => {
-    setUploadedFiles((prev) => prev.filter((f) => f.id !== fileId));
+    setUploadedFiles((prev: UploadedFile[]) => prev.filter((f: UploadedFile) => f.id !== fileId));
     message.success("File removed successfully");
   };
 
@@ -624,7 +635,7 @@ export const PFISubmissions: React.FC = () => {
   const excelUploadProps: UploadProps = {
     name: "file",
     accept: ".xlsx,.xls,.csv",
-    beforeUpload: (file) => {
+    beforeUpload: (file: File) => {
       handleFileUpload(file, "excel");
       return false; // Prevent auto upload
     },
@@ -634,7 +645,7 @@ export const PFISubmissions: React.FC = () => {
   const formUploadProps: UploadProps = {
     name: "file",
     accept: ".pdf,.doc,.docx,.txt",
-    beforeUpload: (file) => {
+    beforeUpload: (file: File) => {
       handleFileUpload(file, "form");
       return false; // Prevent auto upload
     },
@@ -841,6 +852,7 @@ export const PFISubmissions: React.FC = () => {
                         <List.Item
                           actions={[
                             <Button
+                              key="remove"
                               type="link"
                               danger
                               icon={<DeleteOutlined />}

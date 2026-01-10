@@ -468,12 +468,12 @@ export const GreenTaxonomy: React.FC = () => {
     let yPosition = margin;
     
     // Colors
-    const primaryColor = [19, 84, 211]; // #1354d3
-    const darkColor = [15, 23, 42]; // #0f172a
-    const lightGray = [241, 245, 249]; // #f1f5f9
-    const greenColor = [39, 190, 99]; // #27be63
-    const orangeColor = [251, 146, 60]; // #fb923c
-    const redColor = [239, 68, 68]; // #ef4444
+    const primaryColor: [number, number, number] = [19, 84, 211]; // #1354d3
+    const darkColor: [number, number, number] = [15, 23, 42]; // #0f172a
+    const lightGray: [number, number, number] = [241, 245, 249]; // #f1f5f9
+    const greenColor: [number, number, number] = [39, 190, 99]; // #27be63
+    const orangeColor: [number, number, number] = [251, 146, 60]; // #fb923c
+    const redColor: [number, number, number] = [239, 68, 68]; // #ef4444
     
     // Helper function to add new page if needed
     const checkPageBreak = (requiredSpace: number) => {
