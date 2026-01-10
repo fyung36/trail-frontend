@@ -13,59 +13,98 @@
 
 :root {
   --font-inter: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --primary-color: #1a56db;
+  --bg-subtle: #f8fafc;
+  --border-color: #e2e8f0;
+  --text-main: #1e293b;
+  --text-muted: #64748b;
 }
 
 * {
-  margin-inline: 0;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
   font-family: var(--font-inter);
 }
 
 .light {
-  background-color: #f9fafb;
-  color: #111827;
+  background-color: #f8fafc;
+  color: #1e293b;
   
   .dashboard-tab, .card, .ant-card, .new-sidebar-nav {
     background-color: #ffffff !important;
-    border-color: #f3f4f6 !important;
-    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06) !important;
+    border: 1px solid #f1f5f9 !important;
+    border-radius: 12px !important;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
+    padding: 20px !important;
   }
 }
 
 .dark {
   background-color: #0f172a;
-  color: #f8fafc;
+  color: #f1f5f9;
   
   .dashboard-tab, .card, .ant-card, .new-sidebar-nav {
     background-color: #1e293b !important;
-    border-color: #334155 !important;
-    color: #f8fafc !important;
+    border: 1px solid #334155 !important;
+    border-radius: 12px !important;
+    color: #f1f5f9 !important;
+    padding: 20px !important;
   }
   
   .stat-title, p, span:not(.ant-tag) {
     color: #94a3b8 !important;
   }
+}
+
+// Button Overrides
+.ant-btn {
+  border-radius: 8px !important;
+  font-weight: 500 !important;
+  height: 40px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0 16px !important;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
   
-  h1, h2, h3, h4, h5, h6 {
-    color: #f1f5f9 !important;
+  &.ant-btn-primary {
+    background-color: var(--primary-color) !important;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
+    border: none !important;
+    
+    &:hover {
+      background-color: #1e429f !important;
+      transform: translateY(-1px);
+    }
+  }
+}
+
+// Sidebar refinement
+.new-sidebar-nav {
+  padding: 0 !important;
+  margin: 0 !important;
+  border-radius: 0 !important;
+  height: 100vh !important;
+  
+  .sidebar-nav-container {
+    padding: 16px !important;
   }
   
-  .ant-table {
-    background: transparent !important;
-    color: #f8fafc !important;
-  }
-  
-  .ant-table-thead > tr > th {
-    background: #1e293b !important;
-    color: #94a3b8 !important;
-    border-bottom: 1px solid #334155 !important;
-  }
-  
-  .ant-table-tbody > tr > td {
-    border-bottom: 1px solid #334155 !important;
-  }
-  
-  .ant-table-row:hover > td {
-    background: #334155 !important;
+  .submenu-item {
+    border-radius: 8px !important;
+    margin-bottom: 4px !important;
+    padding: 10px 16px !important;
+    transition: background 0.2s ease !important;
+    
+    &:hover {
+      background: rgba(26, 86, 219, 0.05) !important;
+    }
+    
+    &.active {
+      background: var(--primary-color) !important;
+      color: white !important;
+    }
   }
 }
 %btn {

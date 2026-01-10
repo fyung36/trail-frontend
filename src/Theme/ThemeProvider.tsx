@@ -27,10 +27,27 @@ export const ThemeProvider = ({ children }: any) => {
   const antdConfig = useMemo(() => ({
     algorithm: theme === "dark" ? antdTheme.darkAlgorithm : antdTheme.defaultAlgorithm,
     token: {
-      fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif",
-      colorPrimary: "#1354d3",
+      fontFamily: "'Inter', sans-serif",
+      colorPrimary: "#1a56db",
       borderRadius: 8,
+      colorBgContainer: theme === "dark" ? "#1e293b" : "#ffffff",
+      colorBorderSecondary: theme === "dark" ? "#334155" : "#f1f5f9",
+      colorTextBase: theme === "dark" ? "#f1f5f9" : "#1e293b",
+      colorTextDescription: theme === "dark" ? "#94a3b8" : "#64748b",
     },
+    components: {
+      Button: {
+        borderRadius: 8,
+        controlHeight: 40,
+        fontWeight: 500,
+      },
+      Card: {
+        borderRadiusLG: 12,
+      },
+      Table: {
+        borderRadius: 12,
+      }
+    }
   }), [theme]);
 
   if (!isMounted) {
