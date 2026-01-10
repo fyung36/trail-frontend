@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { Table, Tag, Input, Button, Row, Col, Select, Space, Upload, Steps, Modal, Progress, Tabs } from "antd";
 import type { ColumnsType } from "antd/es/table";
-import type { UploadProps } from "antd";
+import type { UploadProps, TabsProps } from "antd";
 import { 
   SearchOutlined, 
   UploadOutlined, 
@@ -389,112 +389,127 @@ export const PFISubmissions: React.FC = () => {
         </p>
       </div>
 
-      <Tabs activeKey={activeTab} onChange={setActiveTab}>
-        <Tabs.TabPane tab="All Submissions" key="submissions">
-          <Row gutter={[16, 16]} style={{ marginBottom: "24px" }}>
-            <Col xs={{ span: 24 }} lg={{ span: 10 }}>
-              <FormFilter
-                onChange={(e) => setSearchText(e.target.value)}
-                placeholder="Search by PFI Name or Project ID"
-                filterText={searchText}
-              />
-            </Col>
-            <Col xs={{ span: 24 }} lg={{ span: 6 }}>
-              <Select
-                placeholder="Filter by Status"
-                style={{ width: "100%" }}
-                size="large"
-                value={statusFilter}
-                onChange={setStatusFilter}
-              >
-                <Select.Option value="all">All Status</Select.Option>
-                <Select.Option value="Draft">Draft</Select.Option>
-                <Select.Option value="Submitted">Submitted</Select.Option>
-                <Select.Option value="Validated">Validated</Select.Option>
-                <Select.Option value="Approved">Approved</Select.Option>
-                <Select.Option value="Published">Published</Select.Option>
-              </Select>
-            </Col>
-            <Col xs={{ span: 24 }} lg={{ span: 8 }}>
-              <Space>
-                <Upload {...uploadProps}>
-                  <ButtonComponent
-                    htmlType="button"
-                    className="updateButton"
-                  >
-                    <UploadOutlined style={{ marginRight: "8px" }} /> Import Excel
-                  </ButtonComponent>
-                </Upload>
-                <ButtonComponent
-                  htmlType="button"
-                  className="btn-outline"
-                >
-                  <DownloadOutlined style={{ marginRight: "8px" }} /> Download Template
-                </ButtonComponent>
-              </Space>
-            </Col>
-          </Row>
+      <Tabs 
+        activeKey={activeTab} 
+        onChange={setActiveTab}
+        items={[
+          {
+            key: "submissions",
+            label: "All Submissions",
+            children: (
+              <>
+                <Row gutter={[16, 16]} style={{ marginBottom: "24px" }}>
+                  <Col xs={{ span: 24 }} lg={{ span: 10 }}>
+                    <FormFilter
+                      onChange={(e) => setSearchText(e.target.value)}
+                      placeholder="Search by PFI Name or Project ID"
+                      filterText={searchText}
+                    />
+                  </Col>
+                  <Col xs={{ span: 24 }} lg={{ span: 6 }}>
+                    <Select
+                      placeholder="Filter by Status"
+                      style={{ width: "100%" }}
+                      size="large"
+                      value={statusFilter}
+                      onChange={setStatusFilter}
+                    >
+                      <Select.Option value="all">All Status</Select.Option>
+                      <Select.Option value="Draft">Draft</Select.Option>
+                      <Select.Option value="Submitted">Submitted</Select.Option>
+                      <Select.Option value="Validated">Validated</Select.Option>
+                      <Select.Option value="Approved">Approved</Select.Option>
+                      <Select.Option value="Published">Published</Select.Option>
+                    </Select>
+                  </Col>
+                  <Col xs={{ span: 24 }} lg={{ span: 8 }}>
+                    <Space>
+                      <Upload {...uploadProps}>
+                        <ButtonComponent
+                          htmlType="button"
+                          className="updateButton"
+                        >
+                          <UploadOutlined style={{ marginRight: "8px" }} /> Import Excel
+                        </ButtonComponent>
+                      </Upload>
+                      <ButtonComponent
+                        htmlType="button"
+                        className="btn-outline"
+                      >
+                        <DownloadOutlined style={{ marginRight: "8px" }} /> Download Template
+                      </ButtonComponent>
+                    </Space>
+                  </Col>
+                </Row>
 
-          <div style={{ marginBottom: "16px", padding: "16px", background: "#f5f5f5", borderRadius: "4px" }}>
-            <Steps
-              current={3}
-              items={[
-                { title: "Draft", icon: <FileExcelOutlined /> },
-                { title: "Submitted", icon: <ClockCircleOutlined /> },
-                { title: "Validated", icon: <CheckCircleOutlined /> },
-                { title: "Approved", icon: <CheckCircleOutlined /> },
-                { title: "Published", icon: <CheckCircleOutlined /> },
-              ]}
-            />
-          </div>
+                <div style={{ marginBottom: "16px", padding: "16px", background: "#f5f5f5", borderRadius: "4px" }}>
+                  <Steps
+                    current={3}
+                    items={[
+                      { title: "Draft", icon: <FileExcelOutlined /> },
+                      { title: "Submitted", icon: <ClockCircleOutlined /> },
+                      { title: "Validated", icon: <CheckCircleOutlined /> },
+                      { title: "Approved", icon: <CheckCircleOutlined /> },
+                      { title: "Published", icon: <CheckCircleOutlined /> },
+                    ]}
+                  />
+                </div>
 
-          <Table
-            columns={submissionColumns}
-            dataSource={filteredSubmissions}
-            scroll={{ x: 1400 }}
-            pagination={{
-              pageSize: 10,
-              showSizeChanger: true,
-              showTotal: (total) => `Total ${total} submissions`,
-            }}
-          />
-        </Tabs.TabPane>
-
-        <Tabs.TabPane tab="Error Log" key="errors">
-          <div style={{ marginBottom: "16px" }}>
-            <Row gutter={[16, 16]}>
-              <Col xs={{ span: 24 }} lg={{ span: 12 }}>
-                <Input
-                  placeholder="Search error log by field, issue, or row ID"
-                  prefix={<SearchOutlined />}
-                  size="large"
+                <Table
+                  columns={submissionColumns}
+                  dataSource={filteredSubmissions}
+                  scroll={{ x: 1400 }}
+                  pagination={{
+                    pageSize: 10,
+                    showSizeChanger: true,
+                    showTotal: (total) => `Total ${total} submissions`,
+                  }}
                 />
-              </Col>
-              <Col xs={{ span: 24 }} lg={{ span: 12 }}>
-                <Space>
-                  <ButtonComponent
-                    htmlType="button"
-                    className="btn-outline"
-                  >
-                    <DownloadOutlined style={{ marginRight: "8px" }} /> Export Error Log
-                  </ButtonComponent>
-                </Space>
-              </Col>
-            </Row>
-          </div>
+              </>
+            ),
+          },
+          {
+            key: "errors",
+            label: "Error Log",
+            children: (
+              <>
+                <div style={{ marginBottom: "16px" }}>
+                  <Row gutter={[16, 16]}>
+                    <Col xs={{ span: 24 }} lg={{ span: 12 }}>
+                      <Input
+                        placeholder="Search error log by field, issue, or row ID"
+                        prefix={<SearchOutlined />}
+                        size="large"
+                      />
+                    </Col>
+                    <Col xs={{ span: 24 }} lg={{ span: 12 }}>
+                      <Space>
+                        <ButtonComponent
+                          htmlType="button"
+                          className="btn-outline"
+                        >
+                          <DownloadOutlined style={{ marginRight: "8px" }} /> Export Error Log
+                        </ButtonComponent>
+                      </Space>
+                    </Col>
+                  </Row>
+                </div>
 
-          <Table
-            columns={errorLogColumns}
-            dataSource={mockErrorLog}
-            scroll={{ x: 1200 }}
-            pagination={{
-              pageSize: 10,
-              showSizeChanger: true,
-              showTotal: (total) => `Total ${total} errors`,
-            }}
-          />
-        </Tabs.TabPane>
-      </Tabs>
+                <Table
+                  columns={errorLogColumns}
+                  dataSource={mockErrorLog}
+                  scroll={{ x: 1200 }}
+                  pagination={{
+                    pageSize: 10,
+                    showSizeChanger: true,
+                    showTotal: (total) => `Total ${total} errors`,
+                  }}
+                />
+              </>
+            ),
+          },
+        ]}
+      />
 
       <Modal
         title={`Error Log - ${selectedRow?.pfiName}`}

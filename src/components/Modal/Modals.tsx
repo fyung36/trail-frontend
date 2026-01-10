@@ -31,7 +31,7 @@ const Modals = ({
       width={modalwidth}
       footer={footer}
       style={style}
-      destroyOnClose
+      destroyOnHidden
     >
       {children}
     </Modal>
