@@ -4,6 +4,7 @@ import "@/styles/index.scss";
 import "./globals.scss";
 
 import StyledComponentsRegistry from "@/lib/AntdRegistry";
+import ReactQueryProvider from "@/providers/ReactQueryProvider";
 const inter = Inter({ 
   subsets: ["latin"],
   display: 'swap',
@@ -26,7 +27,9 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className} suppressHydrationWarning>
-        <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
+        <ReactQueryProvider>
+          <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
+        </ReactQueryProvider>
       </body>
     </html>
   );

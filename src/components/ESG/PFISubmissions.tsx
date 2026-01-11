@@ -18,6 +18,8 @@ import {
 } from "@ant-design/icons";
 import ButtonComponent from "../Buttons/Button";
 import FormFilter from "../FormFilter";
+import { apiService } from "@/services/apiService";
+import { useQuery } from "@tanstack/react-query";
 
 interface PFISubmission {
   key: string;
@@ -50,315 +52,20 @@ interface UploadedFile {
   size: number;
 }
 
-// Mock PFI Submissions Data - Comprehensive and Consistent
-const mockPFISubmissions: PFISubmission[] = [
-  {
-    key: "1",
-    pfiName: "Lagos Solar Farm Initiative",
-    projectId: "PROJ-2024-001",
-    submissionDate: "2024-01-20",
-    status: "Approved",
-    dataQualityScore: 95,
-    errorCount: 2,
-    validator: "John Doe",
-    lastUpdated: "2024-01-22",
-  },
-  {
-    key: "2",
-    pfiName: "Kano Water Treatment Plant",
-    projectId: "PROJ-2024-002",
-    submissionDate: "2024-01-18",
-    status: "Validated",
-    dataQualityScore: 88,
-    errorCount: 5,
-    validator: "Jane Smith",
-    lastUpdated: "2024-01-21",
-  },
-  {
-    key: "3",
-    pfiName: "Port Harcourt Refinery Upgrade",
-    projectId: "PROJ-2024-003",
-    submissionDate: "2024-01-15",
-    status: "Submitted",
-    dataQualityScore: 72,
-    errorCount: 12,
-    validator: "-",
-    lastUpdated: "2024-01-16",
-  },
-  {
-    key: "4",
-    pfiName: "Abuja Metro Rail Extension",
-    projectId: "PROJ-2024-004",
-    submissionDate: "2024-01-25",
-    status: "Published",
-    dataQualityScore: 92,
-    errorCount: 1,
-    validator: "John Doe",
-    lastUpdated: "2024-01-26",
-  },
-  {
-    key: "5",
-    pfiName: "Kaduna Coal Power Plant",
-    projectId: "PROJ-2024-005",
-    submissionDate: "2024-01-10",
-    status: "Draft",
-    dataQualityScore: 45,
-    errorCount: 28,
-    validator: "-",
-    lastUpdated: "2024-01-12",
-  },
-  {
-    key: "6",
-    pfiName: "Enugu Waste Management Facility",
-    projectId: "PROJ-2024-006",
-    submissionDate: "2024-01-22",
-    status: "Approved",
-    dataQualityScore: 89,
-    errorCount: 3,
-    validator: "Jane Smith",
-    lastUpdated: "2024-01-24",
-  },
-  {
-    key: "7",
-    pfiName: "Ibadan Wind Energy Project",
-    projectId: "PROJ-2024-007",
-    submissionDate: "2024-01-19",
-    status: "Approved",
-    dataQualityScore: 93,
-    errorCount: 1,
-    validator: "John Doe",
-    lastUpdated: "2024-01-21",
-  },
-  {
-    key: "8",
-    pfiName: "Benin City Water Supply Upgrade",
-    projectId: "PROJ-2024-008",
-    submissionDate: "2024-01-17",
-    status: "Validated",
-    dataQualityScore: 87,
-    errorCount: 4,
-    validator: "Jane Smith",
-    lastUpdated: "2024-01-20",
-  },
-  {
-    key: "9",
-    pfiName: "Warri Refinery Modernization",
-    projectId: "PROJ-2024-009",
-    submissionDate: "2024-01-14",
-    status: "Submitted",
-    dataQualityScore: 68,
-    errorCount: 15,
-    validator: "-",
-    lastUpdated: "2024-01-15",
-  },
-  {
-    key: "10",
-    pfiName: "Lagos BRT System Expansion",
-    projectId: "PROJ-2024-010",
-    submissionDate: "2024-01-23",
-    status: "Published",
-    dataQualityScore: 91,
-    errorCount: 2,
-    validator: "John Doe",
-    lastUpdated: "2024-01-25",
-  },
-  {
-    key: "11",
-    pfiName: "Kano Gas Power Station",
-    projectId: "PROJ-2024-011",
-    submissionDate: "2024-01-16",
-    status: "Validated",
-    dataQualityScore: 75,
-    errorCount: 8,
-    validator: "Jane Smith",
-    lastUpdated: "2024-01-18",
-  },
-  {
-    key: "12",
-    pfiName: "Port Harcourt Recycling Plant",
-    projectId: "PROJ-2024-012",
-    submissionDate: "2024-01-21",
-    status: "Approved",
-    dataQualityScore: 90,
-    errorCount: 2,
-    validator: "John Doe",
-    lastUpdated: "2024-01-23",
-  },
-  {
-    key: "13",
-    pfiName: "Jos Solar Microgrid",
-    projectId: "PROJ-2024-013",
-    submissionDate: "2024-01-24",
-    status: "Published",
-    dataQualityScore: 94,
-    errorCount: 1,
-    validator: "Jane Smith",
-    lastUpdated: "2024-01-26",
-  },
-  {
-    key: "14",
-    pfiName: "Calabar Industrial Waste Treatment",
-    projectId: "PROJ-2024-014",
-    submissionDate: "2024-01-20",
-    status: "Validated",
-    dataQualityScore: 86,
-    errorCount: 5,
-    validator: "John Doe",
-    lastUpdated: "2024-01-22",
-  },
-  {
-    key: "15",
-    pfiName: "Kaduna Oil Refinery Expansion",
-    projectId: "PROJ-2024-015",
-    submissionDate: "2024-01-12",
-    status: "Draft",
-    dataQualityScore: 52,
-    errorCount: 32,
-    validator: "-",
-    lastUpdated: "2024-01-13",
-  },
-];
-
-// Mock Error Log Data
-const mockErrorLog: ErrorLog[] = [
-  {
-    key: "1",
-    field: "Carbon Scope 1",
-    issue: "Missing emission factor for diesel consumption",
-    rowId: "PROJ-2024-003-001",
-    severity: "Critical",
-    status: "Open",
-    action: "Require emission factor input",
-  },
-  {
-    key: "2",
-    field: "ESG Compliance Status",
-    issue: "Incomplete evidence documentation",
-    rowId: "PROJ-2024-003-002",
-    severity: "Warning",
-    status: "Open",
-    action: "Upload missing documents",
-  },
-  {
-    key: "3",
-    field: "Green Taxonomy Classification",
-    issue: "Classification does not match sector criteria",
-    rowId: "PROJ-2024-003-003",
-    severity: "Critical",
-    status: "Open",
-    action: "Review and update classification",
-  },
-  {
-    key: "4",
-    field: "Project Amount",
-    issue: "Value exceeds expected range for sector",
-    rowId: "PROJ-2024-003-004",
-    severity: "Warning",
-    status: "Open",
-    action: "Verify data accuracy",
-  },
-  {
-    key: "5",
-    field: "Carbon Scope 2",
-    issue: "Missing grid emission factor",
-    rowId: "PROJ-2024-005-001",
-    severity: "Critical",
-    status: "Open",
-    action: "Provide grid emission factor",
-  },
-  {
-    key: "6",
-    field: "End Date",
-    issue: "End date is before start date",
-    rowId: "PROJ-2024-005-002",
-    severity: "Critical",
-    status: "Open",
-    action: "Correct project timeline",
-  },
-  {
-    key: "7",
-    field: "Taxonomy Evidence",
-    issue: "Evidence file not uploaded",
-    rowId: "PROJ-2024-005-003",
-    severity: "Warning",
-    status: "Open",
-    action: "Upload evidence document",
-  },
-  {
-    key: "8",
-    field: "Location",
-    issue: "Location field is empty",
-    rowId: "PROJ-2024-009-001",
-    severity: "Warning",
-    status: "Open",
-    action: "Provide project location",
-  },
-  {
-    key: "9",
-    field: "Carbon Scope 3",
-    issue: "Upstream emissions data incomplete",
-    rowId: "PROJ-2024-009-002",
-    severity: "Warning",
-    status: "Open",
-    action: "Complete scope 3 emissions data",
-  },
-  {
-    key: "10",
-    field: "Data Quality Score",
-    issue: "Score below acceptable threshold",
-    rowId: "PROJ-2024-015-001",
-    severity: "Critical",
-    status: "Open",
-    action: "Improve data completeness",
-  },
-  {
-    key: "11",
-    field: "Sector Classification",
-    issue: "Sector does not match project description",
-    rowId: "PROJ-2024-015-002",
-    severity: "Warning",
-    status: "Resolved",
-    action: "Updated sector classification",
-  },
-  {
-    key: "12",
-    field: "Project Start Date",
-    issue: "Date format incorrect",
-    rowId: "PROJ-2024-011-001",
-    severity: "Info",
-    status: "Resolved",
-    action: "Corrected date format",
-  },
-  {
-    key: "13",
-    field: "ESG Status",
-    issue: "Status workflow violation",
-    rowId: "PROJ-2024-011-002",
-    severity: "Warning",
-    status: "Open",
-    action: "Review approval workflow",
-  },
-  {
-    key: "14",
-    field: "Beneficiary Count",
-    issue: "Value missing",
-    rowId: "PROJ-2024-009-003",
-    severity: "Warning",
-    status: "Open",
-    action: "Provide beneficiary count",
-  },
-  {
-    key: "15",
-    field: "Energy Consumption",
-    issue: "Units not specified",
-    rowId: "PROJ-2024-005-004",
-    severity: "Info",
-    status: "Open",
-    action: "Specify measurement units",
-  },
-];
-
 export const PFISubmissions: React.FC = () => {
+  // Fetch data using React Query for caching and performance
+  const { data: mockPFISubmissions = [], isLoading: submissionsLoading } = useQuery({
+    queryKey: ['pfi-submissions'],
+    queryFn: () => apiService.getPFISubmissions(),
+    staleTime: 5 * 60 * 1000, // 5 minutes
+  });
+
+  const { data: mockErrorLog = [], isLoading: errorLogLoading } = useQuery({
+    queryKey: ['error-logs'],
+    queryFn: () => apiService.getErrorLogs(),
+    staleTime: 5 * 60 * 1000, // 5 minutes
+  });
+
   const [searchText, setSearchText] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [selectedRow, setSelectedRow] = useState<PFISubmission | null>(null);
@@ -755,6 +462,12 @@ export const PFISubmissions: React.FC = () => {
           Manage PFI ESG submissions with Excel import, validation, and approval workflow
         </p>
       </div>
+      
+      {(submissionsLoading || errorLogLoading) && (
+        <div style={{ textAlign: 'center', padding: '40px' }}>
+          <div className="loading-spinner">Loading PFI submissions...</div>
+        </div>
+      )}
 
       <Tabs 
         activeKey={activeTab} 

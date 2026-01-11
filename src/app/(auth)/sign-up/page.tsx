@@ -1,5 +1,5 @@
 import React from "react";
-import SignUp from "@/pages/SignUp";
+import SignUp from "@/logic/SignUp";
 
 const signUp = () => {
   return (

@@ -1,5 +1,5 @@
 import React from "react";
-import OrgMemberLogic from "@/pages/OrgMembers/orgMemberLogic";
+import OrgMemberLogic from "@/logic/OrgMembers/orgMemberLogic";
 
 const OrgMember = () => {
   return (

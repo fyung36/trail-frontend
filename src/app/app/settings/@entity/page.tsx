@@ -1,4 +1,4 @@
-import EntityLogic from "@/pages/Entity/EntityLogic";
+import EntityLogic from "@/logic/Entity/EntityLogic";
 
 const Entity = () => {
   return (

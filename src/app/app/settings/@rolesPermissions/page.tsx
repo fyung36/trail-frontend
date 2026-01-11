@@ -1,4 +1,4 @@
-import RolePermissionLogic from "@/pages/Role&Permission/RolePermissionLogic";
+import RolePermissionLogic from "@/logic/RolePermission/RolePermissionLogic";
 
 const RolesPermissions = () => {
   return (

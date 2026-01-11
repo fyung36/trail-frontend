@@ -1,4 +1,4 @@
-import ChangePwdLogic from "@/pages/ChangePwdLogic";
+import ChangePwdLogic from "@/logic/ChangePwdLogic";
 
 const ChangePassword = () => {
   return (

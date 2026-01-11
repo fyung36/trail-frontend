@@ -1,5 +1,5 @@
 import React from "react";
-import MetricsLogic from "@/pages/Metrics/MetricsLogic";
+import MetricsLogic from "@/logic/Metrics/MetricsLogic";
 
 const Metrics = () => {
   return (

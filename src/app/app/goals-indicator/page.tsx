@@ -2,7 +2,7 @@ import React from "react";
 import dynamic from "next/dynamic";
 
 // Lazy load the GoalsLogic component
-const GoalsLogic = dynamic(() => import("@/pages/Goals.tsx/GoalsLogic"), {
+const GoalsLogic = dynamic(() => import("@/logic/Goals/GoalsLogic"), {
   ssr: true,
   loading: () => <div className="loading-spinner">Loading goals...</div>,
 });

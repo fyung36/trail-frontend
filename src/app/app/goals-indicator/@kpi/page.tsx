@@ -1,5 +1,5 @@
 import React from "react";
-import KpiLogic from "@/pages/KPI/KpiLogic";
+import KpiLogic from "@/logic/KPI/KpiLogic";
 
 const Goals = () => {
   return (

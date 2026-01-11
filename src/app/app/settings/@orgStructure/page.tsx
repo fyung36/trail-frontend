@@ -1,4 +1,4 @@
-import OrgStructureLogic from "@/pages/OrgStructure/OrgStructureLogic";
+import OrgStructureLogic from "@/logic/OrgStructure/OrgStructureLogic";
 
 const orgStructure = () => {
   return (

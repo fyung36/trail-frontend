@@ -1,4 +1,4 @@
-import ProfileDetails from "@/pages/Profile/ProfileDetails";
+import ProfileDetails from "@/logic/Profile/ProfileDetails";
 
 // const onChange = (key: string) => {
 //   console.log(key);

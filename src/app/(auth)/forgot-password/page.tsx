@@ -1,5 +1,5 @@
 import React from "react";
-import ForgotPassword from "@/pages/ForgotPassword";
+import ForgotPassword from "@/logic/ForgotPassword";
 
 const forgotPassword = () => {
   return (

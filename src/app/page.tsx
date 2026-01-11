@@ -1,5 +1,5 @@
 "use client";
-import Login from "@/pages/Login";
+import Login from "@/logic/Login";
 
 export default function LoginScreen() {
   return (

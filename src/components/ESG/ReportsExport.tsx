@@ -11,75 +11,47 @@ import {
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import ButtonComponent from "../Buttons/Button";
+import { apiService } from "@/services/apiService";
+import { useQuery } from "@tanstack/react-query";
 
 export const ReportsExport: React.FC = () => {
   const [loading, setLoading] = useState<string | null>(null);
 
-  // Mock data (consistent with other modules)
-  const mockPortfolioData = {
-    portfolioValue: 12500000000,
-    projectCount: 42,
-    esgCompleteness: 87,
-    reportingTimeliness: { onTime: 38, late: 4, total: 42 },
-    greenTaxonomy: { green: 65, transition: 25, notGreen: 10 },
-    carbonSummary: { scope1: 12450, scope2: 8750, scope3: 32100, total: 53300 },
-    esgFlags: { red: 3, amber: 7, green: 32 }
-  };
-
-  // Comprehensive and Consistent Dataset - 15 Projects
-  const mockProjects = [
-    { projectId: "PROJ-2024-001", pfiName: "Lagos Solar Farm Initiative", sector: "Renewable Energy", location: "Lagos State", amount: 2500000000, taxonomyStatus: "Green", esgStatus: "Complete" },
-    { projectId: "PROJ-2024-002", pfiName: "Kano Water Treatment Plant", sector: "Water & Sanitation", location: "Kano State", amount: 1800000000, taxonomyStatus: "Green", esgStatus: "Complete" },
-    { projectId: "PROJ-2024-003", pfiName: "Port Harcourt Refinery Upgrade", sector: "Oil & Gas", location: "Rivers State", amount: 4500000000, taxonomyStatus: "Transition", esgStatus: "Incomplete" },
-    { projectId: "PROJ-2024-004", pfiName: "Abuja Metro Rail Extension", sector: "Transportation", location: "FCT, Abuja", amount: 3200000000, taxonomyStatus: "Green", esgStatus: "Complete" },
-    { projectId: "PROJ-2024-005", pfiName: "Kaduna Coal Power Plant", sector: "Energy", location: "Kaduna State", amount: 3800000000, taxonomyStatus: "Not Green", esgStatus: "Incomplete" },
-    { projectId: "PROJ-2024-006", pfiName: "Enugu Waste Management Facility", sector: "Waste Management", location: "Enugu State", amount: 950000000, taxonomyStatus: "Green", esgStatus: "Complete" },
-    { projectId: "PROJ-2024-007", pfiName: "Ibadan Wind Energy Project", sector: "Renewable Energy", location: "Oyo State", amount: 2200000000, taxonomyStatus: "Green", esgStatus: "Complete" },
-    { projectId: "PROJ-2024-008", pfiName: "Benin City Water Supply Upgrade", sector: "Water & Sanitation", location: "Edo State", amount: 1450000000, taxonomyStatus: "Green", esgStatus: "Complete" },
-    { projectId: "PROJ-2024-009", pfiName: "Warri Refinery Modernization", sector: "Oil & Gas", location: "Delta State", amount: 5200000000, taxonomyStatus: "Transition", esgStatus: "Incomplete" },
-    { projectId: "PROJ-2024-010", pfiName: "Lagos BRT System Expansion", sector: "Transportation", location: "Lagos State", amount: 2800000000, taxonomyStatus: "Green", esgStatus: "Complete" },
-    { projectId: "PROJ-2024-011", pfiName: "Kano Gas Power Station", sector: "Energy", location: "Kano State", amount: 3500000000, taxonomyStatus: "Transition", esgStatus: "Incomplete" },
-    { projectId: "PROJ-2024-012", pfiName: "Port Harcourt Recycling Plant", sector: "Waste Management", location: "Rivers State", amount: 1200000000, taxonomyStatus: "Green", esgStatus: "Complete" },
-    { projectId: "PROJ-2024-013", pfiName: "Jos Solar Microgrid", sector: "Renewable Energy", location: "Plateau State", amount: 850000000, taxonomyStatus: "Green", esgStatus: "Complete" },
-    { projectId: "PROJ-2024-014", pfiName: "Calabar Industrial Waste Treatment", sector: "Waste Management", location: "Cross River State", amount: 1650000000, taxonomyStatus: "Green", esgStatus: "Complete" },
-    { projectId: "PROJ-2024-015", pfiName: "Kaduna Oil Refinery Expansion", sector: "Oil & Gas", location: "Kaduna State", amount: 4800000000, taxonomyStatus: "Not Green", esgStatus: "Incomplete" },
-  ];
-
-  const mockPFISubmissions = [
-    { pfiName: "Lagos Solar Farm Initiative", projectId: "PROJ-2024-001", status: "Approved", dataQualityScore: 95, errorCount: 2 },
-    { pfiName: "Kano Water Treatment Plant", projectId: "PROJ-2024-002", status: "Validated", dataQualityScore: 88, errorCount: 5 },
-    { pfiName: "Port Harcourt Refinery Upgrade", projectId: "PROJ-2024-003", status: "Submitted", dataQualityScore: 72, errorCount: 12 },
-    { pfiName: "Abuja Metro Rail Extension", projectId: "PROJ-2024-004", status: "Published", dataQualityScore: 92, errorCount: 1 },
-    { pfiName: "Kaduna Coal Power Plant", projectId: "PROJ-2024-005", status: "Draft", dataQualityScore: 45, errorCount: 28 },
-    { pfiName: "Enugu Waste Management Facility", projectId: "PROJ-2024-006", status: "Approved", dataQualityScore: 89, errorCount: 3 },
-    { pfiName: "Ibadan Wind Energy Project", projectId: "PROJ-2024-007", status: "Approved", dataQualityScore: 93, errorCount: 1 },
-    { pfiName: "Benin City Water Supply Upgrade", projectId: "PROJ-2024-008", status: "Validated", dataQualityScore: 87, errorCount: 4 },
-    { pfiName: "Warri Refinery Modernization", projectId: "PROJ-2024-009", status: "Submitted", dataQualityScore: 68, errorCount: 15 },
-    { pfiName: "Lagos BRT System Expansion", projectId: "PROJ-2024-010", status: "Published", dataQualityScore: 91, errorCount: 2 },
-    { pfiName: "Kano Gas Power Station", projectId: "PROJ-2024-011", status: "Validated", dataQualityScore: 75, errorCount: 8 },
-    { pfiName: "Port Harcourt Recycling Plant", projectId: "PROJ-2024-012", status: "Approved", dataQualityScore: 90, errorCount: 2 },
-    { pfiName: "Jos Solar Microgrid", projectId: "PROJ-2024-013", status: "Published", dataQualityScore: 94, errorCount: 1 },
-    { pfiName: "Calabar Industrial Waste Treatment", projectId: "PROJ-2024-014", status: "Validated", dataQualityScore: 86, errorCount: 5 },
-    { pfiName: "Kaduna Oil Refinery Expansion", projectId: "PROJ-2024-015", status: "Draft", dataQualityScore: 52, errorCount: 32 },
-  ];
-
-  const mockCarbonData = [
-    { projectId: "PROJ-2024-001", projectName: "Lagos Solar Farm Initiative", scope1: 150, scope2: 450, scope3: 2300, total: 2900, baselineYear: 2023, targetYear: 2026, targetReduction: 45, currentProgress: 42 },
-    { projectId: "PROJ-2024-002", projectName: "Kano Water Treatment Plant", scope1: 280, scope2: 1200, scope3: 4200, total: 5680, baselineYear: 2023, targetYear: 2025, targetReduction: 30, currentProgress: 19 },
-    { projectId: "PROJ-2024-003", projectName: "Port Harcourt Refinery Upgrade", scope1: 4500, scope2: 2800, scope3: 15000, total: 22300, baselineYear: 2023, targetYear: 2027, targetReduction: 25, currentProgress: 20 },
-    { projectId: "PROJ-2024-004", projectName: "Abuja Metro Rail Extension", scope1: 120, scope2: 800, scope3: 5200, total: 6120, baselineYear: 2023, targetYear: 2026, targetReduction: 35, currentProgress: 24 },
-    { projectId: "PROJ-2024-005", projectName: "Kaduna Coal Power Plant", scope1: 8500, scope2: 3200, scope3: 12000, total: 23700, baselineYear: 2023, targetYear: 2026, targetReduction: 15, currentProgress: 9 },
-    { projectId: "PROJ-2024-006", projectName: "Enugu Waste Management Facility", scope1: 180, scope2: 520, scope3: 2800, total: 3500, baselineYear: 2023, targetYear: 2025, targetReduction: 40, currentProgress: 36 },
-    { projectId: "PROJ-2024-007", projectName: "Ibadan Wind Energy Project", scope1: 120, scope2: 380, scope3: 2100, total: 2600, baselineYear: 2023, targetYear: 2026, targetReduction: 48, currentProgress: 46 },
-    { projectId: "PROJ-2024-008", projectName: "Benin City Water Supply Upgrade", scope1: 220, scope2: 950, scope3: 3800, total: 4970, baselineYear: 2023, targetYear: 2025, targetReduction: 32, currentProgress: 27 },
-    { projectId: "PROJ-2024-009", projectName: "Warri Refinery Modernization", scope1: 5200, scope2: 3200, scope3: 18000, total: 26400, baselineYear: 2023, targetYear: 2027, targetReduction: 22, currentProgress: 18 },
-    { projectId: "PROJ-2024-010", projectName: "Lagos BRT System Expansion", scope1: 95, scope2: 650, scope3: 4800, total: 5545, baselineYear: 2023, targetYear: 2026, targetReduction: 38, currentProgress: 26 },
-    { projectId: "PROJ-2024-011", projectName: "Kano Gas Power Station", scope1: 3800, scope2: 2100, scope3: 9500, total: 15400, baselineYear: 2023, targetYear: 2026, targetReduction: 28, currentProgress: 23 },
-    { projectId: "PROJ-2024-012", projectName: "Port Harcourt Recycling Plant", scope1: 140, scope2: 480, scope3: 2400, total: 3020, baselineYear: 2023, targetYear: 2025, targetReduction: 45, currentProgress: 42 },
-    { projectId: "PROJ-2024-013", projectName: "Jos Solar Microgrid", scope1: 80, scope2: 250, scope3: 1200, total: 1530, baselineYear: 2023, targetYear: 2025, targetReduction: 55, currentProgress: 52 },
-    { projectId: "PROJ-2024-014", projectName: "Calabar Industrial Waste Treatment", scope1: 200, scope2: 680, scope3: 3200, total: 4080, baselineYear: 2023, targetYear: 2026, targetReduction: 35, currentProgress: 32 },
-    { projectId: "PROJ-2024-015", projectName: "Kaduna Oil Refinery Expansion", scope1: 9200, scope2: 3800, scope3: 14000, total: 27000, baselineYear: 2023, targetYear: 2027, targetReduction: 12, currentProgress: 10 },
-  ];
+  // Define types for portfolio data
+  interface PortfolioData {
+    portfolioValue: number;
+    projectCount: number;
+    esgCompleteness: number;
+    reportingTimeliness: { onTime: number; late: number; total: number };
+    greenTaxonomy: { green: number; transition: number; notGreen: number };
+    carbonSummary: { scope1: number; scope2: number; scope3: number; total: number };
+    esgFlags: { red: number; amber: number; green: number };
+  }
+  
+  // Fetch data using React Query for caching and performance
+  const { data: mockPortfolioData = {} as PortfolioData, isLoading: portfolioLoading } = useQuery({
+    queryKey: ['portfolio-data'],
+    queryFn: () => apiService.getPortfolioData(),
+    staleTime: 5 * 60 * 1000, // 5 minutes
+  });
+  
+  const { data: mockProjects = [], isLoading: projectsLoading } = useQuery({
+    queryKey: ['projects'],
+    queryFn: () => apiService.getProjects(),
+    staleTime: 5 * 60 * 1000, // 5 minutes
+  });
+  
+  const { data: mockPFISubmissions = [], isLoading: pfiLoading } = useQuery({
+    queryKey: ['pfi-submissions'],
+    queryFn: () => apiService.getPFISubmissions(),
+    staleTime: 5 * 60 * 1000, // 5 minutes
+  });
+  
+  const { data: mockCarbonData = [], isLoading: carbonLoading } = useQuery({
+    queryKey: ['carbon-data'],
+    queryFn: () => apiService.getCarbonData(),
+    staleTime: 5 * 60 * 1000, // 5 minutes
+  });
 
   const formatNumber = (value: number) => {
     return new Intl.NumberFormat("en-NG", {
@@ -611,6 +583,12 @@ export const ReportsExport: React.FC = () => {
           Generate and export comprehensive ESG reports in various formats
         </p>
       </div>
+      
+      {(portfolioLoading || projectsLoading || pfiLoading || carbonLoading) && (
+        <div style={{ textAlign: 'center', padding: '40px' }}>
+          <div className="loading-spinner">Loading report data...</div>
+        </div>
+      )}
 
       <Row gutter={[16, 16]}>
         {reportButtons.map((report, index) => (

@@ -7,6 +7,8 @@ import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import ButtonComponent from "../Buttons/Button";
 import FormFilter from "../FormFilter";
+import { apiService } from "@/services/apiService";
+import { useQuery } from "@tanstack/react-query";
 
 interface TaxonomyRule {
   key: string;
@@ -27,205 +29,20 @@ interface ProjectClassification {
   lastUpdated: string;
 }
 
-// Mock Taxonomy Rules
-const mockTaxonomyRules: TaxonomyRule[] = [
-  {
-    key: "1",
-    category: "Renewable Energy",
-    criteria: "Projects generating energy from renewable sources",
-    threshold: "≥80% renewable energy output",
-    evidenceRequired: "Energy generation reports, renewable source certificates",
-  },
-  {
-    key: "2",
-    category: "Energy Efficiency",
-    criteria: "Projects reducing energy consumption",
-    threshold: "≥30% energy reduction vs baseline",
-    evidenceRequired: "Energy audits, baseline comparison reports",
-  },
-  {
-    key: "3",
-    category: "Clean Transportation",
-    criteria: "Electric or low-emission transport systems",
-    threshold: "Zero direct emissions or <50g CO₂/km",
-    evidenceRequired: "Vehicle specifications, emission certificates",
-  },
-  {
-    key: "4",
-    category: "Water & Wastewater",
-    criteria: "Water conservation and treatment projects",
-    threshold: "≥20% water savings or treatment capacity ≥10,000 m³/day",
-    evidenceRequired: "Water impact assessments, treatment certifications",
-  },
-  {
-    key: "5",
-    category: "Waste Management",
-    criteria: "Recycling, composting, or waste-to-energy",
-    threshold: "≥60% waste diversion from landfill",
-    evidenceRequired: "Waste audit reports, diversion certificates",
-  },
-  {
-    key: "6",
-    category: "Transition Activities",
-    criteria: "Activities in transition towards green",
-    threshold: "Meets transition pathway criteria",
-    evidenceRequired: "Transition plans, improvement commitments",
-  },
-];
-
-// Mock Project Classifications - Comprehensive and Consistent
-const mockClassifications: ProjectClassification[] = [
-  {
-    key: "1",
-    projectId: "PROJ-2024-001",
-    projectName: "Lagos Solar Farm Initiative",
-    sector: "Renewable Energy",
-    classification: "Green",
-    evidenceStatus: "Provided",
-    evidenceFile: "solar_farm_evidence.pdf",
-    lastUpdated: "2024-01-20",
-  },
-  {
-    key: "2",
-    projectId: "PROJ-2024-002",
-    projectName: "Kano Water Treatment Plant",
-    sector: "Water & Sanitation",
-    classification: "Green",
-    evidenceStatus: "Provided",
-    evidenceFile: "water_treatment_evidence.pdf",
-    lastUpdated: "2024-01-18",
-  },
-  {
-    key: "3",
-    projectId: "PROJ-2024-003",
-    projectName: "Port Harcourt Refinery Upgrade",
-    sector: "Oil & Gas",
-    classification: "Transition",
-    evidenceStatus: "Provided",
-    evidenceFile: "refinery_transition_plan.pdf",
-    lastUpdated: "2024-01-15",
-  },
-  {
-    key: "4",
-    projectId: "PROJ-2024-004",
-    projectName: "Abuja Metro Rail Extension",
-    sector: "Transportation",
-    classification: "Green",
-    evidenceStatus: "Provided",
-    evidenceFile: "metro_rail_evidence.pdf",
-    lastUpdated: "2024-01-22",
-  },
-  {
-    key: "5",
-    projectId: "PROJ-2024-005",
-    projectName: "Kaduna Coal Power Plant",
-    sector: "Energy",
-    classification: "Not Green",
-    evidenceStatus: "Missing",
-    lastUpdated: "2024-01-10",
-  },
-  {
-    key: "6",
-    projectId: "PROJ-2024-006",
-    projectName: "Enugu Waste Management Facility",
-    sector: "Waste Management",
-    classification: "Green",
-    evidenceStatus: "Provided",
-    evidenceFile: "waste_management_evidence.pdf",
-    lastUpdated: "2024-01-25",
-  },
-  {
-    key: "7",
-    projectId: "PROJ-2024-007",
-    projectName: "Ibadan Wind Energy Project",
-    sector: "Renewable Energy",
-    classification: "Green",
-    evidenceStatus: "Provided",
-    evidenceFile: "wind_energy_evidence.pdf",
-    lastUpdated: "2024-01-19",
-  },
-  {
-    key: "8",
-    projectId: "PROJ-2024-008",
-    projectName: "Benin City Water Supply Upgrade",
-    sector: "Water & Sanitation",
-    classification: "Green",
-    evidenceStatus: "Provided",
-    evidenceFile: "water_supply_evidence.pdf",
-    lastUpdated: "2024-01-17",
-  },
-  {
-    key: "9",
-    projectId: "PROJ-2024-009",
-    projectName: "Warri Refinery Modernization",
-    sector: "Oil & Gas",
-    classification: "Transition",
-    evidenceStatus: "Provided",
-    evidenceFile: "warri_refinery_transition.pdf",
-    lastUpdated: "2024-01-14",
-  },
-  {
-    key: "10",
-    projectId: "PROJ-2024-010",
-    projectName: "Lagos BRT System Expansion",
-    sector: "Transportation",
-    classification: "Green",
-    evidenceStatus: "Provided",
-    evidenceFile: "brt_expansion_evidence.pdf",
-    lastUpdated: "2024-01-23",
-  },
-  {
-    key: "11",
-    projectId: "PROJ-2024-011",
-    projectName: "Kano Gas Power Station",
-    sector: "Energy",
-    classification: "Transition",
-    evidenceStatus: "Provided",
-    evidenceFile: "gas_power_transition.pdf",
-    lastUpdated: "2024-01-16",
-  },
-  {
-    key: "12",
-    projectId: "PROJ-2024-012",
-    projectName: "Port Harcourt Recycling Plant",
-    sector: "Waste Management",
-    classification: "Green",
-    evidenceStatus: "Provided",
-    evidenceFile: "recycling_plant_evidence.pdf",
-    lastUpdated: "2024-01-21",
-  },
-  {
-    key: "13",
-    projectId: "PROJ-2024-013",
-    projectName: "Jos Solar Microgrid",
-    sector: "Renewable Energy",
-    classification: "Green",
-    evidenceStatus: "Provided",
-    evidenceFile: "solar_microgrid_evidence.pdf",
-    lastUpdated: "2024-01-24",
-  },
-  {
-    key: "14",
-    projectId: "PROJ-2024-014",
-    projectName: "Calabar Industrial Waste Treatment",
-    sector: "Waste Management",
-    classification: "Green",
-    evidenceStatus: "Provided",
-    evidenceFile: "industrial_waste_evidence.pdf",
-    lastUpdated: "2024-01-20",
-  },
-  {
-    key: "15",
-    projectId: "PROJ-2024-015",
-    projectName: "Kaduna Oil Refinery Expansion",
-    sector: "Oil & Gas",
-    classification: "Not Green",
-    evidenceStatus: "Missing",
-    lastUpdated: "2024-01-12",
-  },
-];
-
 export const GreenTaxonomy: React.FC = () => {
+  // Fetch data using React Query for caching and performance
+  const { data: mockTaxonomyRules = [], isLoading: rulesLoading } = useQuery({
+    queryKey: ['taxonomy-rules'],
+    queryFn: () => apiService.getTaxonomyRules(),
+    staleTime: 5 * 60 * 1000, // 5 minutes
+  });
+
+  const { data: mockClassifications = [], isLoading: classificationsLoading } = useQuery({
+    queryKey: ['classifications'],
+    queryFn: () => apiService.getClassifications(),
+    staleTime: 5 * 60 * 1000, // 5 minutes
+  });
+
   const [searchText, setSearchText] = useState("");
   const [classificationFilter, setClassificationFilter] = useState<string>("all");
 
@@ -740,6 +557,12 @@ export const GreenTaxonomy: React.FC = () => {
           DBN Green Taxonomy rules and project classification status
         </p>
       </div>
+      
+      {(rulesLoading || classificationsLoading) && (
+        <div style={{ textAlign: 'center', padding: '40px' }}>
+          <div className="loading-spinner">Loading taxonomy data...</div>
+        </div>
+      )}
 
       <Row gutter={[24, 24]} style={{ marginBottom: "32px" }}>
         <Col xs={{ span: 24 }} lg={{ span: 14 }}>

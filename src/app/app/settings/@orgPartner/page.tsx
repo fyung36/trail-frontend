@@ -1,4 +1,4 @@
-import OrgPartnersLogic from "@/pages/OrgPartners/orgPartnersLogic";
+import OrgPartnersLogic from "@/logic/OrgPartners/orgPartnersLogic";
 
 const OrgPartner = () => {
   return (
